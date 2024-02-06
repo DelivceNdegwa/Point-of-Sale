@@ -47,6 +47,7 @@ class FlatButton(Button):
         self.background_disabled = ""
         self.markup = True
 
+
 class CircleButton(FlatButton):
     bcolor = ColorProperty([1,1,1,1])
     active = BooleanProperty(False)

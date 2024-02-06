@@ -16,5 +16,8 @@ class Auth(BoxLayout):
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)
 
+    def authenticate(self):
+        App.get_running_app().root.ids.scrn_mngr.current = "scrn_home"
+
     def render(self, _):
         pass
