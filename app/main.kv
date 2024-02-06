@@ -1,5 +1,8 @@
 
 #: import Home views.home.Home
+#: import Auth views.auth.Auth
+#: import BackBox widgets.box.BackBox
+#: import Text widgets.labels.Text
 
 <MainWindow>:
     orientation: 'vertical'
@@ -11,6 +14,10 @@
             size: self.size
     ScreenManager:
         id: scrn_mngr
+        Screen:
+            name: 'scrn_auth'
+            Auth:
+                id: auth
         Screen:
             name: 'scrn_home'
             Home:

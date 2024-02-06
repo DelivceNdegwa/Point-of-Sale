@@ -1,3 +1,44 @@
 <Auth>:
-	orientation: 'vertical'
-	
+	BoxLayout:
+		orientation: 'vertical'
+		spacing: dp(24)
+		padding: dp(24)
+		canvas.before:
+			Color:
+				rgba: [1,1,1,1]
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source:"assets/imgs/bg-login.png" # Takes in an image for the rectangle
+
+		AnchorLayout:
+			BoxLayout:
+				orientation:'vertical'
+				size_hint: .8,.7
+				AnchorLayout:
+					anchor_y: 'bottom'
+					Image:
+						source: "assets/imgs/logo-light.png"
+				BoxLayout:
+					orientation:'vertical'
+					spacing: dp(24)
+					Text:
+						text:'POS System'
+						font_name: app.fonts.heading
+						font_size: dp(42)
+						color: app.color_primary_text
+						halign: "center"
+						valign: "bottom"
+						size_hint_y: .3
+					BoxLayout:
+						Label:
+							text:'Monitor key aspects of your inventory'
+							text_size: [self.parent.width, None]
+							size: self.texture_size
+							color: app.color_primary_text
+							font_name: app.fonts.subheading
+							font_size: dp(24)
+							halign: "center"
+							valign: "top"
+	BoxLayout:
+		orientation: 'vertical'

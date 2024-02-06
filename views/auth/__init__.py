@@ -1,1 +1,1 @@
-from views.auth import Auth
+from .auth import Auth
