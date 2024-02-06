@@ -25,20 +25,103 @@
 					Text:
 						text:'POS System'
 						font_name: app.fonts.heading
-						font_size: dp(42)
+						font_size: app.fonts.size.larger
 						color: app.color_primary_text
 						halign: "center"
 						valign: "bottom"
-						size_hint_y: .3
-					BoxLayout:
+					AnchorLayout:
+						anchor_y: "top"
 						Label:
 							text:'Monitor key aspects of your inventory'
 							text_size: [self.parent.width, None]
 							size: self.texture_size
 							color: app.color_primary_text
 							font_name: app.fonts.subheading
-							font_size: dp(24)
+							font_size: app.fonts.size.h3
 							halign: "center"
 							valign: "top"
+							size_hint_y: None
 	BoxLayout:
 		orientation: 'vertical'
+		spacing: dp(12)
+		BoxLayout:
+			orientation: 'vertical'
+			spacing: dp(12)
+			size_hint_y: .3
+			Text:
+				text: "Hello!"
+				font_name: app.fonts.styled
+				font_size: app.fonts.size.larger
+				color: app.color_primary_text
+				halign: "center"
+				valign: "bottom"
+				size_hint_y: None
+				height: dp(64)
+			AnchorLayout:
+				anchor_y: "top"
+				Label:
+					text:'Enter your details to sign in'
+					text_size: [self.parent.width, None]
+					size: self.texture_size
+					color: app.color_secondary_text
+					font_name: app.fonts.body
+					halign: "center"
+					valign: "top"
+					font_size: app.fonts.size.h3
+					size_hint_y: None
+		AnchorLayout:
+			size_hint_y: .5
+			BoxLayout:
+				orientation: 'vertical'
+				spacing: dp(24)
+				padding: dp(24)
+				size_hint_x: .7
+				BackBox:
+					size_hint_y: None
+					height: dp(64)
+					bcolor: app.color_secondary_bg
+					padding: [dp(12), dp(2)]
+					radius: [self.height*.1]
+					FlatField:
+						hint_text: "Username"
+						hint_text_color: app.color_primary_text
+						font_size: app.fonts.size.h2
+				BackBox:
+					size_hint_y: None
+					height: dp(64)
+					bcolor: app.color_secondary_bg
+					padding: [dp(12), dp(2)]
+					radius: [self.height*.1]
+					FlatField:
+						hint_text: "Password"
+						hint_text_color: app.color_primary_text
+						font_size: app.fonts.size.h2
+				BackBox:
+					size_hint_y: None
+					height: dp(64)
+					RoundedButton:
+						text: "Sign In"
+						font_name: app.fonts.heading
+						font_size: app.fonts.size.h2
+						bcolor: app.color_primary
+						radius: [self.height*.1]
+
+				BackBox:
+					size_hint_y: None
+					height: dp(64)
+					FlatButton:
+						text: "Don't have an account?"
+						font_name: app.fonts.subheading
+						font_size: app.fonts.size.h3
+						color: app.color_primary_text
+				Widget:
+		AnchorLayout:
+			orientation: 'vertical'
+			size_hint_y: .2
+			Text:
+				text: "v0.01"
+				font_size: app.fonts.size.h2
+				valign: "bottom"
+				padding: dp(24)
+				halign: "center"
+				color: app.color_primary_text

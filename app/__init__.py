@@ -19,6 +19,7 @@ class MainApp(App):
 
     fonts = QueryDict()
     fonts.size = QueryDict()
+    fonts.size.larger = dp(42)
     fonts.size.h1 = dp(24)
     fonts.size.h2 = dp(22)
     fonts.size.h3 = dp(18)
