@@ -29,6 +29,7 @@ class MainApp(App):
     fonts.heading = 'assets/fonts/Roboto/Roboto-Bold.ttf'
     fonts.subheading = 'assets/fonts/Roboto/Roboto-Medium.ttf'
     fonts.body = 'assets/fonts/Roboto/Roboto-Regular.ttf'
+    fonts.styled = 'assets/fonts/Lobster/Lobster-Regular.ttf'
 
     def build(self):
         return MainWindow()
