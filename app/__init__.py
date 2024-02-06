@@ -26,9 +26,9 @@ class MainApp(App):
     fonts.size.h5 = dp(14)
     fonts.size.h6 = dp(12)
 
-    fonts.heading = 'assets/fonts/Inter/Inter-Bold.otf'
-    fonts.subheading = 'assets/fonts/Inter/Inter-Regular.otf'
-    fonts.body = 'assets/fonts/Inter/Inter-ExtraLight.otf'
+    fonts.heading = 'assets/fonts/Roboto/Roboto-Bold.ttf'
+    fonts.subheading = 'assets/fonts/Roboto/Roboto-Medium.ttf'
+    fonts.body = 'assets/fonts/Roboto/Roboto-Regular.ttf'
 
     def build(self):
         return MainWindow()
