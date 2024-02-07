@@ -10,12 +10,14 @@ from kivy.clock import Clock, mainthread
 
 from kivy.properties import StringProperty, ListProperty, ColorProperty, NumericProperty
 
-Builder.load_file('views/home/home.kv')
-class Home(BoxLayout):
+Builder.load_file('views/auth_screen/auth.kv')
+class Auth(BoxLayout):
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)
 
+    def authenticate(self):
+        App.get_running_app().root.ids.scrn_mngr.current = "scrn_home"
+
     def render(self, _):
         pass
-        

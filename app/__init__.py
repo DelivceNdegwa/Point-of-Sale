@@ -7,7 +7,7 @@ from kivy.properties import ColorProperty, ListProperty
 from .view import MainWindow
 
 class MainApp(App):
-    theme = "light"
+    theme = "dark"
     color_primary = ColorProperty(rgba("#3B0BFB"))
     color_secondary = ColorProperty(rgba("#65DDB2"))
     color_tertiary = ColorProperty(rgba("#F27373"))
