@@ -1,7 +1,10 @@
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
+from kivy.uix.dropdown import DropDown
+from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle, Line
 from kivy.properties import ColorProperty, ListProperty
+from kivy.core.window import Window
 
 from kivy.metrics import dp, sp
 
@@ -90,3 +93,51 @@ class OutlineTextField(FlatField):
 
     def on_radius(self, *args): 
         self.border_draw.rounded_rectangle=[self.pos[0], self.pos[1], self.size[0], self.size[1], self.radius[0]]
+
+
+class SearchBar(FlatField):
+    suggestion_results = ListProperty(['Product 01', 'Product 02', 'Product 03'])
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.mutiline = False
+        self.dropdown = None
+
+    def on_text(self, inst, text: str):
+        try:
+            if self.dropdown:
+                self.dropdown.dismiss()
+                self.dropdown = None
+            
+            # Show current suggestions
+            self.show_suggestions(text)
+        except Exception as e:
+            print(e)
+
+    def open_dropdown(self, *args):
+        if self.dropdown:
+            self.dropdown.open(self)
+
+    def keyboard_on_key_down(self, window, key_code, text, modifier):
+        if key_code[0] == ord("\r") and self.dropdown:
+            self.text = self.values[0]
+            self.dropdown.dismiss()
+            self.dropdown = None
+
+    def show_suggestions(self, suggestion: str):
+        try:
+            self.dropdown = DropDown()
+            self.dropdown.autowidth = False
+            self.dropdown.size_hint_x = None
+            self.dropdown.width = Window.width*.4
+            
+            for result in self.suggestion_results:
+                btn = Button()
+                btn.text = result
+                btn.size_hint_y = None
+                btn.height = dp(54)
+                self.dropdown.add_widget(btn)
+
+            if len(self.suggestion_results) > 0:
+                self.dropdown.open(self)
+        except Exception as e:
+            print(e)
