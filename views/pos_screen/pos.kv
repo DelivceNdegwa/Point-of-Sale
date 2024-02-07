@@ -2,6 +2,35 @@
     BoxLayout:
         orientation: 'vertical'
         size_hint_x: .7
+        spacing: dp(12)
+        padding: dp(12)
+        BoxLayout:
+            spacing: dp(12)
+            size_hint_y: None
+            height: dp(64)
+            BoxLayout:
+                size_hint_x: None
+                width: self.height
+                Image:
+                    source:"assets/imgs/logo-light.png"
+            AnchorLayout:
+                anchor_x: 'left'
+                BackBox:
+                    bcolor: app.color_secondary_bg
+                    radius: [self.height*.1]
+                    padding: dp(12)
+                    size_hint_y: .7
+                    Text:
+                        color: app.color_secondary_text
+                        text: icon("icon-search")
+                        size_hint_x: None
+                        width: self.height
+                        font_size: app.fonts.size.h3
+                    FlatField:
+                        hint_text: "Search by product name or code"
+        BoxLayout:
+            spacing: dp(12)
+
     BackBox:
         orientation: 'vertical'
         size_hint_x: .3
