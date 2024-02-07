@@ -3,11 +3,11 @@
         orientation: 'vertical'
         size_hint_x: .7
         spacing: dp(12)
-        padding: dp(12)
+        padding: [dp(14), dp(0)]
         BoxLayout:
             spacing: dp(12)
             size_hint_y: None
-            height: dp(64)
+            height: dp(128)
             BoxLayout:
                 size_hint_x: None
                 width: self.height
@@ -15,23 +15,134 @@
                     source:"assets/imgs/logo-light.png"
             AnchorLayout:
                 anchor_x: 'left'
+                padding: [dp(24), dp(4)]
                 BackBox:
                     bcolor: app.color_secondary_bg
                     radius: [self.height*.1]
-                    padding: dp(12)
-                    size_hint_y: .7
+                    padding: [dp(12), dp(0)]
+                    size_hint_y: None
+                    height: dp(54)
                     Text:
                         color: app.color_secondary_text
                         text: icon("icon-search")
                         size_hint_x: None
                         width: self.height
-                        font_size: app.fonts.size.h3
+                        font_size: app.fonts.size.h1
+                        halign: "center"
+                        valign: "middle"
+
                     FlatField:
                         hint_text: "Search by product name or code"
         BoxLayout:
             spacing: dp(12)
+            orientation: 'vertical'
+            padding: [0,0, dp(24), 0]
+            BackBox:
+                size_hint_y: None
+                height: dp(48)
+                bcolor: app.color_secondary_bg
+                spacing: dp(12)
+                padding: [dp(12), dp(2)]
+                radius: [self.height*.1]
+                Text:
+                    text: 'Product Code'
+                    font_size: app.fonts.size.h3
+                    font_name: app.fonts.heading
+                    color: app.color_primary_text
+                    valign: "middle"
+                    size_hint_x: .2
+                Text:
+                    text: 'Product Name'
+                    font_size: app.fonts.size.h3
+                    font_name: app.fonts.heading
+                    color: app.color_primary_text
+                    valign: "middle"
+                    size_hint_x: .4
+                Text:
+                    text: 'Quantity'
+                    font_size: app.fonts.size.h3
+                    font_name: app.fonts.heading
+                    halign: "center"
+                    color: app.color_primary_text
+                    valign: "middle"
+                    size_hint_x: .2
+                Text:
+                    text: 'Price(KES)'
+                    font_size: app.fonts.size.h3
+                    font_name: app.fonts.heading
+                    color: app.color_primary_text
+                    valign: "middle"
+                    halign: "center"
+                    size_hint_x: .2
+            BoxLayout:
+                ScrollView:
+                    do_scroll: [False, True] #Scroll on the Y axis
+                    size_hint_y: None
+                    height: self.parent.height
+                    GridLayout:
+                        id: gl_products
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: dp(12)
+
 
     BackBox:
         orientation: 'vertical'
         size_hint_x: .3
         bcolor: app.color_alternate
+
+
+<ProductTile>:
+    size_hint_y: None
+    height: dp(48)
+    bcolor: app.color_secondary_bg
+    spacing: dp(12)
+    padding: [dp(12), dp(2)]
+    canvas.after:
+        Color:
+            rgba: app.color_secondary_bg
+        Rectangle:
+            pos: self.pos
+            size: [self.size[0], dp(1)]
+    Text:
+        text: root.product_code
+        font_size: app.fonts.size.h3
+        font_name: app.fonts.body
+        color: app.color_primary_text
+        valign: "middle"
+        size_hint_x: .2
+    Text:
+        text: root.product_name
+        font_size: app.fonts.size.h3
+        font_name: app.fonts.body
+        color: app.color_primary_text
+        valign: "middle"
+        size_hint_x: .4
+    BackBox:
+        size_hint_x: .2
+        FlatButton:
+            text: icon("icon-minus-circle")
+            color: app.color_tertiary
+            font_size: app.fonts.size.h1
+            on_release: root.quantity_callback(root, False) if root.quantity_callback else print
+        Text:
+            text: str(root.product_quantity)
+            font_size: app.fonts.size.h3
+            font_name: app.fonts.heading
+            color: app.color_primary_text
+            valign: "middle"
+            halign: "center"
+        FlatButton:
+            text: icon("icon-plus-circle")
+            color: app.color_secondary
+            font_size: app.fonts.size.h1
+            on_release: root.quantity_callback(root, True) if root.quantity_callback else print
+    Text:
+        text: str(round(root.product_price, 2))
+        font_size: app.fonts.size.h3
+        font_name: app.fonts.body
+        color: app.color_primary_text
+        valign: "middle"
+        halign: "center"
+        size_hint_x: .2
