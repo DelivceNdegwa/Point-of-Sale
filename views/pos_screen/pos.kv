@@ -1,3 +1,6 @@
+#: import Factory kivy.factory.Factory
+
+
 <Pos>:
     BoxLayout:
         orientation: 'vertical'
@@ -33,6 +36,7 @@
 
                     SearchBar:
                         hint_text: "Search by product name or code"
+                        suggestion_widget: Factory.FlatButton
         BoxLayout:
             spacing: dp(12)
             orientation: 'vertical'
@@ -91,6 +95,145 @@
         orientation: 'vertical'
         size_hint_x: .3
         bcolor: app.color_alternate
+        spacing: dp(12)
+        padding: [0, 0, 0, dp(12)]
+        BoxLayout:
+            size_hint_y: None
+            height: dp(64)
+            spacing: dp(12)
+            padding: [dp(12), dp(0)]
+            FlatButton:
+                text: icon("icon-bell")
+                color: app.color_primary_text
+                font_size: app.fonts.size.h1
+                size_hint_x: None
+                valign: "middle"
+                width: self.height
+            Widget:
+            BoxLayout:
+                RelativeLayout:
+                    Text:
+                        text: icon("icon-chevron-down")
+                        color: app.color_primary_text
+                        font_size: app.fonts.size.h2
+                        halign: "right"
+                    BoxLayout:
+                        padding: [0, 0, dp(24) ,0]
+                        Spinner:
+                            text: root.username
+                            font_name: app.fonts.styled
+                            color: app.color_primary_text
+                            font_size: app.fonts.size.h3
+                            text_size: self.size
+                            halign: "right"
+                            valign: "middle"
+                            values: ["Profile", "Logout"]
+                            background_normal: ""
+                            background_down: ""
+                            background_color: [0,0,0,0]
+        Divider:
+            id: hr
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: dp(8)
+            BoxLayout:
+                size_hint_y: None
+                height: dp(20)
+                Text:
+                    text:'Current Cart'
+                    color: app.color_primary
+                    font_size: app.fonts.size.h3
+                    halign: "center"
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(8)
+                padding: dp(12)
+                BoxLayout:
+                    id: header_box
+                    spacing: dp(4)
+                    size_hint_y: None
+                    height: dp(24)
+                    Text:
+                        text:'Product Name'
+                        color: app.color_primary_text
+                        font_size: app.fonts.size.h3
+                        halign: "left"
+                        size_hint_x: .5
+                    Text:
+                        text:'Qty'
+                        color: app.color_primary_text
+                        font_size: app.fonts.size.h3
+                        halign: "center"
+                        size_hint_x: .25
+                    Text:
+                        text:'Price'
+                        color: app.color_primary_text
+                        font_size: app.fonts.size.h3
+                        halign: "right"   
+                        size_hint_x: .25  
+                Divider: 
+                BoxLayout:
+                    ScrollView:
+                        do_scroll: [False, True]
+                        size_hint_y: None
+                        height: self.parent.height
+                        GridLayout:
+                            id: gl_receipt
+                            cols: 1
+                            spacing: dp(8)
+                            size_hint_y: None
+                            height: self.minimum_height
+                            ReceiptItem:
+                                product_name: "Toss 200GM"
+                                product_price: 140.0
+                                product_quantity: 2
+                            ReceiptItem:
+                                product_name: "Kensalt 500gm"
+                                product_quantity: 1
+                                product_price: 50.0
+                            ReceiptItem:
+                                product_name: "Brookside Dairy Milk 500ml"
+                                product_quantity: 2
+                                product_price: 128.0
+        Divider:
+            id: hr
+        BoxLayout:
+            size_hint_y: None
+            height: dp(54)*2 
+            padding: [dp(12), 0]
+            orientation:'vertical'
+            spacing: dp(8)
+            BoxLayout:
+                spacing: dp(12)
+                Text:
+                    text:'TOTAL'
+                    font_name: app.fonts.heading
+                    font_size: app.fonts.size.h2
+                    color: app.color_primary_text
+                    halign: "left"
+                Text:
+                    text: str(round(root.current_total, 2))
+                    font_name: app.fonts.heading
+                    font_size: app.fonts.size.h2
+                    color: app.color_primary_text
+                    halign: "right"
+            RoundedButton:
+                text: "Print Receipt"
+                font_name: app.fonts.heading
+                font_size: app.fonts.size.h3
+                color: rgba("#ffffff")
+                radius: [self.height*.1]
+                bcolor: app.color_primary
+
+<Divider@Widget>:
+    size_hint_y: None
+    height: dp(1.2)
+    canvas.before:
+        Color:
+            rgba: rgba("#dedede")
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
 
 <ProductTile>:
@@ -146,3 +289,29 @@
         valign: "middle"
         halign: "center"
         size_hint_x: .2
+
+
+<ReceiptItem>
+    spacing: dp(4)
+    size_hint_y: None
+    height: dp(24)
+    Text:
+        text: root.product_name
+        color: app.color_primary_text
+        font_size: app.fonts.size.h4
+        font_name: app.fonts.body
+        halign: "left"
+        size_hint_x: .5
+    Text:
+        text: f"X{root.product_quantity}"
+        color: app.color_primary_text
+        font_size: app.fonts.size.h4
+        font_name: app.fonts.body
+        halign: "center"
+        size_hint_x: .25
+    Text:
+        text: str(round(root.product_price, 2))
+        color: app.color_primary_text
+        font_size: app.fonts.size.h4
+        halign: "right"   
+        size_hint_x: .25  

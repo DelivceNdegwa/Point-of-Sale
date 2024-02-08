@@ -3,7 +3,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle, Line
-from kivy.properties import ColorProperty, ListProperty
+from kivy.properties import ColorProperty, ListProperty, ObjectProperty
 from kivy.core.window import Window
 
 from kivy.metrics import dp, sp
@@ -97,6 +97,7 @@ class OutlineTextField(FlatField):
 
 class SearchBar(FlatField):
     suggestion_results = ListProperty(['Product 01', 'Product 02', 'Product 03'])
+    suggestion_widget = ObjectProperty(allownone=True)
     def __init__(self, **kw):
         super().__init__(**kw)
         self.mutiline = False
@@ -133,6 +134,8 @@ class SearchBar(FlatField):
             
             for result in self.suggestion_results:
                 btn = Button()
+                if self.suggestion_widget:
+                    btn = self.suggestion_widget()
                 btn.text = result
                 btn.size_hint_y = None
                 btn.height = dp(54)

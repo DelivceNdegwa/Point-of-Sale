@@ -14,6 +14,7 @@ from random import randint
 Builder.load_file('views/pos_screen/pos.kv')
 class Pos(BoxLayout):
     username = StringProperty("Delivce")
+    current_total = NumericProperty(0.0)
     role = "user"
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
@@ -61,6 +62,18 @@ class ProductTile(BoxLayout):
     product_quantity = NumericProperty(0)
     product_price = NumericProperty(0)
     qty_callback = ObjectProperty(allownone=True)
+    def __init__(self, **kw) -> None:
+        super().__init__(**kw)
+        Clock.schedule_once(self.render, .1)
+
+    def render(self, _):
+        pass
+
+
+class ReceiptItem(BoxLayout):
+    product_name = StringProperty("")
+    product_quantity = NumericProperty(0)
+    product_price = NumericProperty(0)
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)
