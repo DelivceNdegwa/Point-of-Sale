@@ -118,10 +118,11 @@ class SearchBar(FlatField):
             self.dropdown.open(self)
 
     def keyboard_on_key_down(self, window, key_code, text, modifier):
-        if key_code[0] == ord("\r") and self.dropdown:
-            self.text = self.values[0]
+        if self.dropdown:
             self.dropdown.dismiss()
             self.dropdown = None
+        else:
+            super().keyboard_on_key_down(window, key_code, text, modifier)
 
     def show_suggestions(self, suggestion: str):
         try:
