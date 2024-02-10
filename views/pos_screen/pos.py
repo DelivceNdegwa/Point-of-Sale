@@ -15,22 +15,32 @@ Builder.load_file('views/pos_screen/pos.kv')
 class Pos(BoxLayout):
     username = StringProperty("Delivce")
     current_total = NumericProperty(0.0)
+    current_cart = ListProperty([])
     role = "user"
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)    
 
     def render(self, _):
-        for x in range(5):
-            prod = {
-                "product_name": f"Product {x}",
-                "product_quantity": 1,
-                "product_price": 200.00,
-                "product_code": str(randint(1000000, 4000000))
-            }
-            self.add_product(prod)
-    
-    def add_product(self, product: dict):
+        pass
+
+    def add_product(self, inst):
+        data = {
+            "product_name": inst.product_name,
+            "product_code": inst.product_code,
+            "product_price": inst.product_price,
+            "product_quantity": 1
+        }
+        self.current_cart.append(data)
+
+    def on_current_cart(self, inst, cart):
+        self.ids.gl_receipt.clear_widgets()
+        self.ids.gl_products.clear_widgets()
+        for item in cart:
+            self._add_product(item)
+            self.add_receipt_item(item)
+
+    def _add_product(self, product: dict):
         products_grid = self.ids.gl_products
         pt = ProductTile()
         pt.product_code = product.get("product_code", "")
@@ -39,6 +49,14 @@ class Pos(BoxLayout):
         pt.product_price = product.get("product_price", 0)
         pt.quantity_callback = self.quantity_control
         products_grid.add_widget(pt)
+
+    def add_receipt_item(self, item: dict) -> None:
+        receiptItem = ReceiptItem()
+        receiptItem.product_name = item["product_name"]
+        receiptItem.product_quantity = item["product_quantity"]
+        receiptItem.product_price = item["product_price"]
+        
+        self.ids.gl_receipt.add_widget(receiptItem)
     
     def quantity_control(self, tile, increasing: bool=False):
         _quantity = int(tile.product_quantity)
@@ -49,8 +67,8 @@ class Pos(BoxLayout):
         else:
             _quantity -= 1
         
-        if _quantity <= 0:
-            _quantity = 0
+        if _quantity <= 1:
+            _quantity = 1
     
         tile.product_quantity = _quantity
         tile.product_price = _single_product_price * _quantity
@@ -80,4 +98,3 @@ class ReceiptItem(BoxLayout):
 
     def render(self, _):
         pass
-        

@@ -22,7 +22,7 @@
                 BackBox:
                     bcolor: app.color_secondary_bg
                     radius: [self.height*.1]
-                    padding: [dp(12), dp(0)]
+                    padding: [dp(12), 0]
                     size_hint_y: None
                     height: dp(54)
                     Text:
@@ -36,7 +36,7 @@
 
                     SearchBar:
                         hint_text: "Search by product name or code"
-                        suggestion_widget: Factory.FlatButton
+                        callback: root.add_product
         BoxLayout:
             spacing: dp(12)
             orientation: 'vertical'
@@ -183,18 +183,6 @@
                             spacing: dp(8)
                             size_hint_y: None
                             height: self.minimum_height
-                            ReceiptItem:
-                                product_name: "Toss 200GM"
-                                product_price: 140.0
-                                product_quantity: 2
-                            ReceiptItem:
-                                product_name: "Kensalt 500gm"
-                                product_quantity: 1
-                                product_price: 50.0
-                            ReceiptItem:
-                                product_name: "Brookside Dairy Milk 500ml"
-                                product_quantity: 2
-                                product_price: 128.0
         Divider:
             id: hr
         BoxLayout:

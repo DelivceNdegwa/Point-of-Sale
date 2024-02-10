@@ -1,9 +1,12 @@
+from random import randint
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color, RoundedRectangle, Line
-from kivy.properties import ColorProperty, ListProperty, ObjectProperty
+from kivy.properties import ColorProperty, ListProperty, ObjectProperty, StringProperty, NumericProperty
 from kivy.core.window import Window
 
 from kivy.metrics import dp, sp
@@ -11,6 +14,39 @@ from kivy.metrics import dp, sp
 Builder.load_string("""
 <FlatField>:
     padding: [dp(6), (self.height - self.line_height)/2]
+
+
+<SuggestionWidget>:
+    size_hint_y: None
+    height: dp(42)
+    spacing: dp(8)
+    padding: [dp(8), dp(4)]
+    canvas.before:
+        Color:
+            rgba: app.color_secondary_bg
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Text:
+        text:root.product_code
+        color: app.color_primary_text
+        font_size: app.fonts.size.h4
+        font_name: app.fonts.body
+        size_hint_x: .3
+
+    Text:
+        text:root.product_name
+        color: app.color_primary_text
+        font_size: app.fonts.size.h4
+        font_name: app.fonts.body
+        size_hint_x: .5
+
+    Text:
+        text:f"KES {round(root.product_price, 2)}"
+        color: app.color_primary_text
+        font_size: app.fonts.size.h4
+        font_name: app.fonts.body
+        size_hint_x: .2
 """)
 class FlatField(TextInput):
     def __init__(self, **kw):
@@ -98,6 +134,7 @@ class OutlineTextField(FlatField):
 class SearchBar(FlatField):
     suggestion_results = ListProperty(['Product 01', 'Product 02', 'Product 03'])
     suggestion_widget = ObjectProperty(allownone=True)
+    callback = ObjectProperty(allownone=True)
     def __init__(self, **kw):
         super().__init__(**kw)
         self.mutiline = False
@@ -126,6 +163,10 @@ class SearchBar(FlatField):
             super().keyboard_on_key_down(window, key_code, text, modifier)
 
     def show_suggestions(self, suggestion: str):
+        suggestions = self.get_suggestions(suggestion)
+        self.suggestion_results = suggestions
+
+    # def on_choices(self, instance, choices):
         try:
             self.dropdown = DropDown()
             self.dropdown.autowidth = False
@@ -133,15 +174,47 @@ class SearchBar(FlatField):
             self.dropdown.width = Window.width*.4
             
             for result in self.suggestion_results:
-                btn = Button()
-                if self.suggestion_widget:
-                    btn = self.suggestion_widget()
-                btn.text = result
+                btn = SuggestionWidget()
+                btn.product_name = result["product_name"]
+                btn.product_code = result["product_code"]
+                btn.product_price = result["product_price"]
                 btn.size_hint_y = None
                 btn.height = dp(54)
+                btn.bind(on_release=self.suggest)
                 self.dropdown.add_widget(btn)
 
             if len(self.suggestion_results) > 0:
                 self.dropdown.open(self)
         except Exception as e:
             print(e)
+
+
+    def suggest(self, inst):
+        if self.callback:
+            self.callback(inst)
+        if self.dropdown:
+            self.dropdown.dismiss()
+            self.dropdown = None
+
+    def get_suggestions(self, suggestion):
+        products = []
+        for x in range(5):
+            product = {
+                "product_name": f"Product {x}",
+                "product_quantity": 1,
+                "product_price": 200.00,
+                "product_code": str(randint(1000000, 4000000))
+            }
+            products.append(product)
+        suggested_products = [
+            suggested_product for suggested_product in products
+            if (suggestion.lower() in suggested_product.get("product_name").lower() or
+                suggestion in str(suggested_product.get("product_price")) or
+                suggestion in suggested_product.get("product_code"))
+        ]
+        return suggested_products
+
+class SuggestionWidget(ButtonBehavior, BoxLayout):
+    product_code = StringProperty("")
+    product_name = StringProperty("")
+    product_price = NumericProperty(0)
