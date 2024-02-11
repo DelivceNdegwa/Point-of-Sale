@@ -49,12 +49,12 @@
                 padding: [dp(12), dp(2)]
                 radius: [self.height*.1]
                 Text:
-                    text: 'Product Code'
+                    text: 'ID'
                     font_size: app.fonts.size.h3
                     font_name: app.fonts.heading
                     color: app.color_primary_text
                     valign: "middle"
-                    size_hint_x: .2
+                    size_hint_x: .15
                 Text:
                     text: 'Product Name'
                     font_size: app.fonts.size.h3
@@ -69,7 +69,7 @@
                     halign: "center"
                     color: app.color_primary_text
                     valign: "middle"
-                    size_hint_x: .2
+                    size_hint_x: .15
                 Text:
                     text: 'Price(KES)'
                     font_size: app.fonts.size.h3
@@ -77,7 +77,15 @@
                     color: app.color_primary_text
                     valign: "middle"
                     halign: "center"
-                    size_hint_x: .2
+                    size_hint_x: .15
+                Text:
+                    text: 'Action'
+                    font_size: app.fonts.size.h3
+                    font_name: app.fonts.heading
+                    color: app.color_primary_text
+                    valign: "middle"
+                    halign: "center"
+                    size_hint_x: .15
             BoxLayout:
                 ScrollView:
                     effect_cls: 'ScrollEffect'
@@ -243,7 +251,7 @@
         font_name: app.fonts.body
         color: app.color_primary_text
         valign: "middle"
-        size_hint_x: .2
+        size_hint_x: .15
     Text:
         text: root.product_name
         font_size: app.fonts.size.h3
@@ -252,7 +260,7 @@
         valign: "middle"
         size_hint_x: .4
     BackBox:
-        size_hint_x: .2
+        size_hint_x: .15
         FlatButton:
             text: icon("icon-minus-circle")
             color: app.color_tertiary
@@ -277,7 +285,17 @@
         color: app.color_primary_text
         valign: "middle"
         halign: "center"
-        size_hint_x: .2
+        size_hint_x: .15
+
+    BackBox:
+        size_hint_x: .15
+        valign: "middle"
+        halign: "center"
+        FlatButton:
+            text: icon("icon-trash-2")
+            color: app.color_tertiary
+            font_size: app.fonts.size.h1
+            on_release: root.product_remove(root) if root.product_remove else print
 
 
 <ReceiptItem>

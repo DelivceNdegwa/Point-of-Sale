@@ -24,6 +24,19 @@ class Pos(BoxLayout):
     def render(self, _):
         pass
 
+    def __update_current_total(self):
+        total = 0.0
+        for product in self.current_cart:
+            total += product["product_price"]
+        self.current_total = total
+
+    def on_current_cart(self, inst, cart):
+        self.ids.gl_receipt.clear_widgets()
+        self.ids.gl_products.clear_widgets()
+        for item in cart:
+            self._add_product(item)
+            self.add_receipt_item(item)
+
     def add_product(self, inst):
         data = {
             "product_name": inst.product_name,
@@ -32,13 +45,7 @@ class Pos(BoxLayout):
             "product_quantity": 1
         }
         self.current_cart.append(data)
-
-    def on_current_cart(self, inst, cart):
-        self.ids.gl_receipt.clear_widgets()
-        self.ids.gl_products.clear_widgets()
-        for item in cart:
-            self._add_product(item)
-            self.add_receipt_item(item)
+        self.__update_current_total()
 
     def _add_product(self, product: dict):
         products_grid = self.ids.gl_products
@@ -48,6 +55,7 @@ class Pos(BoxLayout):
         pt.product_quantity = product.get("product_quantity", 0)
         pt.product_price = product.get("product_price", 0)
         pt.quantity_callback = self.quantity_control
+        pt.product_remove = self.delete_product_from_cart
         products_grid.add_widget(pt)
 
     def add_receipt_item(self, item: dict) -> None:
@@ -57,9 +65,24 @@ class Pos(BoxLayout):
         receiptItem.product_price = item["product_price"]
         
         self.ids.gl_receipt.add_widget(receiptItem)
-    
+
+    def delete_product_from_cart(self, tile):
+        tgt = None
+        temp = list(self.current_cart)
+        for i, product in enumerate(temp):
+            if product["product_code"] == tile.product_code:
+                tgt = i
+                break
+        self.current_cart.pop(i)
+        self.__update_current_total()
+
+
     def quantity_control(self, tile, increasing: bool=False):
+        _product_id = tile.product_code
         _quantity = int(tile.product_quantity)
+        _price = float(tile.product_price)
+        single_product_price = round(_price / _quantity if _quantity > 0 else 0, 2)
+
         if increasing:
             _quantity += 1
         else:
@@ -74,10 +97,6 @@ class Pos(BoxLayout):
             "product_price": tile.product_price,
             "product_quantity": 1
         }
-        fetched_quantity = data.get("product_quantity")
-        fetched_price = data.get("product_price")
-        single_product_price = fetched_price/fetched_quantity if fetched_quantity > 0 else 0
-        _product_id = data.get("product_code")
 
         tmp = list(self.current_cart)
         tgt = None
@@ -87,10 +106,11 @@ class Pos(BoxLayout):
                 break
 
         data["product_quantity"] = _quantity
-        data["product_price"] = _quantity * single_product_price
+        data["product_price"] = single_product_price * _quantity
 
         self.current_cart.pop(i)
         self.current_cart.insert(i, data)
+        self.__update_current_total()
 
 
 class ProductTile(BoxLayout):
@@ -98,7 +118,8 @@ class ProductTile(BoxLayout):
     product_name = StringProperty("")
     product_quantity = NumericProperty(0)
     product_price = NumericProperty(0)
-    qty_callback = ObjectProperty(allownone=True)
+    quantity_callback = ObjectProperty(allownone=True)
+    product_remove = ObjectProperty(allownone=True)
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)
