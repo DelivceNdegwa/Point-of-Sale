@@ -60,8 +60,6 @@ class Pos(BoxLayout):
     
     def quantity_control(self, tile, increasing: bool=False):
         _quantity = int(tile.product_quantity)
-        _price = float(tile.product_price)
-        _single_product_price = round(_price/_quantity, 2)if(tile.product_quantity > 0) else 0
         if increasing:
             _quantity += 1
         else:
@@ -70,8 +68,29 @@ class Pos(BoxLayout):
         if _quantity <= 1:
             _quantity = 1
     
-        tile.product_quantity = _quantity
-        tile.product_price = _single_product_price * _quantity
+        data = {
+            "product_name": tile.product_name,
+            "product_code": tile.product_code,
+            "product_price": tile.product_price,
+            "product_quantity": 1
+        }
+        fetched_quantity = data.get("product_quantity")
+        fetched_price = data.get("product_price")
+        single_product_price = fetched_price/fetched_quantity if fetched_quantity > 0 else 0
+        _product_id = data.get("product_code")
+
+        tmp = list(self.current_cart)
+        tgt = None
+        for i, product in enumerate(tmp):
+            if product["product_code"] == _product_id:
+                tgt = i
+                break
+
+        data["product_quantity"] = _quantity
+        data["product_price"] = _quantity * single_product_price
+
+        self.current_cart.pop(i)
+        self.current_cart.insert(i, data)
 
 
 class ProductTile(BoxLayout):
