@@ -22,12 +22,23 @@ class Pos(BoxLayout):
         Clock.schedule_once(self.render, .1)    
 
     def render(self, _):
-        pass
+        products = [] # Later we will fetch this from a database
+        for i in range(4):
+            price = randint(10, 700)
+            product = {
+                "product_code": str(i).zfill(8),
+                "product_name": f"Product 0{i+1}",
+                "product_quantity": 1,
+                "product_price": price,
+                "price_total": price
+            }
+            products.append(product)
+        self.ids.product_search.suggested_products = products
 
     def __update_current_total(self):
         total = 0.0
         for product in self.current_cart:
-            total += product["product_price"]
+            total += product["price_total"]
         self.current_total = total
 
     def on_current_cart(self, inst, cart):
@@ -38,14 +49,25 @@ class Pos(BoxLayout):
             self.add_receipt_item(item)
 
     def add_product(self, inst):
-        data = {
-            "product_name": inst.product_name,
-            "product_code": inst.product_code,
-            "product_price": inst.product_price,
-            "product_quantity": 1
-        }
-        self.current_cart.append(data)
-        self.__update_current_total()
+        cart_search = [
+            item for item in self.current_cart 
+                if (
+                    item["product_code"] == inst.product_code and
+                    item["product_name"] == inst.product_name
+                )
+        ]
+        if(len(cart_search) == 0):
+            data = {
+                "product_name": inst.product_name,
+                "product_code": inst.product_code,
+                "product_price": inst.product_price,
+                "product_quantity": 1,
+                "price_total": inst.product_price
+            }
+            
+            self.current_cart.append(data)
+            self.__update_current_total()
+        return
 
     def _add_product(self, product: dict):
         products_grid = self.ids.gl_products
@@ -54,6 +76,7 @@ class Pos(BoxLayout):
         pt.product_name = product.get("product_name", "")
         pt.product_quantity = product.get("product_quantity", 0)
         pt.product_price = product.get("product_price", 0)
+        pt.price_total = product.get("price_total", 0)
         pt.quantity_callback = self.quantity_control
         pt.product_remove = self.delete_product_from_cart
         products_grid.add_widget(pt)
@@ -63,6 +86,7 @@ class Pos(BoxLayout):
         receiptItem.product_name = item["product_name"]
         receiptItem.product_quantity = item["product_quantity"]
         receiptItem.product_price = item["product_price"]
+        receiptItem.price_total = item["price_total"]
         
         self.ids.gl_receipt.add_widget(receiptItem)
 
@@ -95,7 +119,8 @@ class Pos(BoxLayout):
             "product_name": tile.product_name,
             "product_code": tile.product_code,
             "product_price": tile.product_price,
-            "product_quantity": tile.product_quantity
+            "product_quantity": tile.product_quantity,
+            "price_total": tile.product_price * tile.product_quantity
         }
 
         tmp = list(self.current_cart)
@@ -106,7 +131,7 @@ class Pos(BoxLayout):
                 break
 
         data["product_quantity"] = _quantity
-        data["product_price"] = single_product_price * _quantity
+        data["price_total"] = single_product_price * _quantity
 
         self.current_cart.pop(i)
         self.current_cart.insert(i, data)
@@ -118,6 +143,7 @@ class ProductTile(BoxLayout):
     product_name = StringProperty("")
     product_quantity = NumericProperty(0)
     product_price = NumericProperty(0)
+    price_total = NumericProperty(0)
     quantity_callback = ObjectProperty(allownone=True)
     product_remove = ObjectProperty(allownone=True)
     def __init__(self, **kw) -> None:
@@ -132,6 +158,7 @@ class ReceiptItem(BoxLayout):
     product_name = StringProperty("")
     product_quantity = NumericProperty(0)
     product_price = NumericProperty(0)
+    price_total = NumericProperty(0)
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)

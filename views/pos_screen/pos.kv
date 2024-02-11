@@ -35,6 +35,7 @@
                         valign: "middle"
 
                     SearchBar:
+                        id: product_search
                         hint_text: "Search by product name or code"
                         callback: root.add_product
         BoxLayout:
@@ -54,30 +55,38 @@
                     font_name: app.fonts.heading
                     color: app.color_primary_text
                     valign: "middle"
-                    size_hint_x: .15
+                    size_hint_x: .125
                 Text:
-                    text: 'Product Name'
+                    text: 'Product'
                     font_size: app.fonts.size.h3
                     font_name: app.fonts.heading
                     color: app.color_primary_text
                     valign: "middle"
-                    size_hint_x: .4
+                    size_hint_x: .375
                 Text:
-                    text: 'Quantity'
+                    text: 'Qty'
                     font_size: app.fonts.size.h3
                     font_name: app.fonts.heading
                     halign: "center"
                     color: app.color_primary_text
                     valign: "middle"
-                    size_hint_x: .15
+                    size_hint_x: .125
                 Text:
-                    text: 'Price(KES)'
+                    text: 'Each'
                     font_size: app.fonts.size.h3
                     font_name: app.fonts.heading
                     color: app.color_primary_text
                     valign: "middle"
                     halign: "center"
-                    size_hint_x: .15
+                    size_hint_x: .125
+                Text:
+                    text: 'Amount'
+                    font_size: app.fonts.size.h3
+                    font_name: app.fonts.heading
+                    color: app.color_primary_text
+                    valign: "middle"
+                    halign: "center"
+                    size_hint_x: .125
                 Text:
                     text: 'Action'
                     font_size: app.fonts.size.h3
@@ -85,7 +94,7 @@
                     color: app.color_primary_text
                     valign: "middle"
                     halign: "center"
-                    size_hint_x: .15
+                    size_hint_x: .125
             BoxLayout:
                 ScrollView:
                     effect_cls: 'ScrollEffect'
@@ -163,23 +172,29 @@
                     size_hint_y: None
                     height: dp(24)
                     Text:
-                        text:'Product Name'
+                        text:'Product'
                         color: app.color_primary_text
                         font_size: app.fonts.size.h3
                         halign: "left"
-                        size_hint_x: .5
+                        size_hint_x: .4
                     Text:
                         text:'Qty'
                         color: app.color_primary_text
                         font_size: app.fonts.size.h3
                         halign: "center"
-                        size_hint_x: .25
+                        size_hint_x: .2
                     Text:
-                        text:'Price'
+                        text:'Each'
                         color: app.color_primary_text
                         font_size: app.fonts.size.h3
                         halign: "right"   
-                        size_hint_x: .25  
+                        size_hint_x: .2
+                    Text:
+                        text:'Amount'
+                        color: app.color_primary_text
+                        font_size: app.fonts.size.h3
+                        halign: "right"   
+                        size_hint_x: .2  
                 Divider: 
                 BoxLayout:
                     ScrollView:
@@ -209,7 +224,7 @@
                     color: app.color_primary_text
                     halign: "left"
                 Text:
-                    text: str(round(root.current_total, 2))
+                    text: f"KES {round(root.current_total, 2)}"
                     font_name: app.fonts.heading
                     font_size: app.fonts.size.h2
                     color: app.color_primary_text
@@ -251,14 +266,14 @@
         font_name: app.fonts.body
         color: app.color_primary_text
         valign: "middle"
-        size_hint_x: .15
+        size_hint_x: .125
     Text:
         text: root.product_name
         font_size: app.fonts.size.h3
         font_name: app.fonts.body
         color: app.color_primary_text
         valign: "middle"
-        size_hint_x: .4
+        size_hint_x: .35
     BackBox:
         size_hint_x: .15
         FlatButton:
@@ -285,10 +300,17 @@
         color: app.color_primary_text
         valign: "middle"
         halign: "center"
-        size_hint_x: .15
-
+        size_hint_x: .125
+    Text:
+        text: str(round(root.price_total, 2))
+        font_size: app.fonts.size.h3
+        font_name: app.fonts.body
+        color: app.color_primary_text
+        valign: "middle"
+        halign: "center"
+        size_hint_x: .125
     BackBox:
-        size_hint_x: .15
+        size_hint_x: .125
         valign: "middle"
         halign: "center"
         FlatButton:
@@ -308,17 +330,23 @@
         font_size: app.fonts.size.h4
         font_name: app.fonts.body
         halign: "left"
-        size_hint_x: .5
+        size_hint_x: .4
     Text:
         text: f"X{root.product_quantity}"
         color: app.color_primary_text
         font_size: app.fonts.size.h4
         font_name: app.fonts.body
         halign: "center"
-        size_hint_x: .25
+        size_hint_x: .2
     Text:
         text: str(round(root.product_price, 2))
         color: app.color_primary_text
         font_size: app.fonts.size.h4
+        halign: "right"
+        size_hint_x: .2
+    Text:
+        text: str(round(root.price_total, 2))
+        color: app.color_primary_text
+        font_size: app.fonts.size.h4
         halign: "right"   
-        size_hint_x: .25  
+        size_hint_x: .2 

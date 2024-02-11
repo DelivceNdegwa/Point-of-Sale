@@ -132,7 +132,8 @@ class OutlineTextField(FlatField):
 
 
 class SearchBar(FlatField):
-    suggestion_results = ListProperty(['Product 01', 'Product 02', 'Product 03'])
+    suggestion_results = ListProperty([])
+    suggested_products = ListProperty([])
     suggestion_widget = ObjectProperty(allownone=True)
     callback = ObjectProperty(allownone=True)
     def __init__(self, **kw):
@@ -166,7 +167,6 @@ class SearchBar(FlatField):
         suggestions = self.get_suggestions(suggestion)
         self.suggestion_results = suggestions
 
-    # def on_choices(self, instance, choices):
         try:
             self.dropdown = DropDown()
             self.dropdown.autowidth = False
@@ -197,22 +197,14 @@ class SearchBar(FlatField):
             self.dropdown = None
 
     def get_suggestions(self, suggestion):
-        products = []
-        for x in range(5):
-            product = {
-                "product_name": f"Product {x}",
-                "product_quantity": 1,
-                "product_price": 200.00,
-                "product_code": str(randint(1000000, 4000000))
-            }
-            products.append(product)
-        suggested_products = [
+        products = self.suggested_products
+        suggested_prods = [
             suggested_product for suggested_product in products
             if (suggestion.lower() in suggested_product.get("product_name").lower() or
                 suggestion in str(suggested_product.get("product_price")) or
                 suggestion in suggested_product.get("product_code"))
         ]
-        return suggested_products
+        return suggested_prods
 
 class SuggestionWidget(ButtonBehavior, BoxLayout):
     product_code = StringProperty("")
