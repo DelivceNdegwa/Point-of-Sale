@@ -95,7 +95,7 @@ class Pos(BoxLayout):
             "product_name": tile.product_name,
             "product_code": tile.product_code,
             "product_price": tile.product_price,
-            "product_quantity": 1
+            "product_quantity": tile.product_quantity
         }
 
         tmp = list(self.current_cart)
