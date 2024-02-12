@@ -249,15 +249,19 @@
                         font_size: app.fonts.size.h3
                         input_filter: "int"
                         halign: "right"
+                        multiline: False
+                        on_text: app.root.on_flatfield_enter(self.text[:-1]) if len(self.text) > 0 and self.text[-1] == '\n' else None
             BoxLayout:
                 spacing: dp(12)
                 Text:
+                    id: change_label
                     text:'CHANGE'
                     font_name: app.fonts.heading
                     font_size: app.fonts.size.h3
                     color: app.color_primary_text
                     halign: "left"
                 Text:
+                    id: change_amount
                     text: f"KES 0.0"
                     font_name: app.fonts.heading
                     font_size: app.fonts.size.h3
@@ -271,6 +275,7 @@
                 color: rgba("#ffffff")
                 radius: [self.height*.1]
                 bcolor: app.color_primary
+                on_release: root.calculate_change()
 
 <Divider@Widget>:
     size_hint_y: None

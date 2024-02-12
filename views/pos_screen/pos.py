@@ -9,6 +9,7 @@ from kivy.utils import rgba, QueryDict
 from kivy.clock import Clock, mainthread
 
 from kivy.properties import StringProperty, ListProperty, ColorProperty, NumericProperty, ObjectProperty
+from widgets.textfields import FlatField
 from random import randint
 
 Builder.load_file('views/pos_screen/pos.kv')
@@ -40,6 +41,7 @@ class Pos(BoxLayout):
         for product in self.current_cart:
             total += product["price_total"]
         self.current_total = total
+        self.calculate_change()
 
     def on_current_cart(self, inst, cart):
         self.ids.gl_receipt.clear_widgets()
@@ -47,6 +49,17 @@ class Pos(BoxLayout):
         for item in cart:
             self._add_product(item)
             self.add_receipt_item(item)
+
+    def calculate_change(self):
+        try:
+            amount_tendered = float(self.ids.amount_tendered.text)
+            if amount_tendered > 0.0 and self.current_total > 0.0:
+                change = amount_tendered - self.current_total
+                self.ids.change_amount.text = f"KES {round(change, 2)}"
+            else:
+                self.ids.change_amount.text = "KES 0.0"
+        except ValueError:
+            self.ids.change_amount.text = "KES 0.0"
 
     def add_product(self, inst):
         cart_search = [
