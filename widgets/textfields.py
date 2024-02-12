@@ -210,3 +210,11 @@ class SuggestionWidget(ButtonBehavior, BoxLayout):
     product_code = StringProperty("")
     product_name = StringProperty("")
     product_price = NumericProperty(0)
+
+
+class AmountTendered(FlatField):
+    amount_total = NumericProperty(0)
+    amount_tendered = NumericProperty(0)
+
+
+    

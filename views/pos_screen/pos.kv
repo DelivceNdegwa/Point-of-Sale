@@ -211,24 +211,59 @@
             id: hr
         BoxLayout:
             size_hint_y: None
-            height: dp(54)*2 
+            height: dp(95)*2 
             padding: [dp(12), 0]
             orientation:'vertical'
             spacing: dp(8)
             BoxLayout:
                 spacing: dp(12)
                 Text:
-                    text:'TOTAL'
+                    text:'AMOUNT DUE'
                     font_name: app.fonts.heading
-                    font_size: app.fonts.size.h2
+                    font_size: app.fonts.size.h3
                     color: app.color_primary_text
                     halign: "left"
                 Text:
                     text: f"KES {round(root.current_total, 2)}"
                     font_name: app.fonts.heading
-                    font_size: app.fonts.size.h2
+                    font_size: app.fonts.size.h3
                     color: app.color_primary_text
                     halign: "right"
+            BoxLayout:
+                size_hint_x: 1
+                spacing: dp(12)
+                Text:
+                    size_hint_x: .5
+                    text: 'TENDERED'
+                    font_name: app.fonts.heading
+                    font_size: app.fonts.size.h3
+                    color: app.color_primary_text
+                    halign: "left"
+                BoxLayout:
+                    bcolor: app.color_primary_bg
+                    size_hint_x: .5
+                    FlatField:
+                        id: amount_tendered
+                        hint_text: "100.0"
+                        font_name: app.fonts.heading
+                        font_size: app.fonts.size.h3
+                        input_filter: "int"
+                        halign: "right"
+            BoxLayout:
+                spacing: dp(12)
+                Text:
+                    text:'CHANGE'
+                    font_name: app.fonts.heading
+                    font_size: app.fonts.size.h3
+                    color: app.color_primary_text
+                    halign: "left"
+                Text:
+                    text: f"KES 0.0"
+                    font_name: app.fonts.heading
+                    font_size: app.fonts.size.h3
+                    color: app.color_primary_text
+                    halign: "right"
+
             RoundedButton:
                 text: "Print Receipt"
                 font_name: app.fonts.heading
