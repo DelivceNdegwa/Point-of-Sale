@@ -3,6 +3,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.modalview import ModalView
 from kivy.metrics import dp, sp
 from kivy.utils import rgba, QueryDict
 
@@ -17,10 +18,12 @@ class Pos(BoxLayout):
     username = StringProperty("Delivce")
     current_total = NumericProperty(0.0)
     current_cart = ListProperty([])
+    amount_tendered = NumericProperty(0.0)
     role = "user"
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)    
+        self.pc = PosCheckout()
 
     def render(self, _):
         products = [] # Later we will fetch this from a database
@@ -54,6 +57,7 @@ class Pos(BoxLayout):
         try:
             amount_tendered = float(self.ids.amount_tendered.text)
             if amount_tendered > 0.0 and self.current_total > 0.0:
+                self.amount_tendered = amount_tendered
                 change = amount_tendered - self.current_total
                 self.ids.change_amount.text = f"KES {round(change, 2)}"
             else:
@@ -150,6 +154,11 @@ class Pos(BoxLayout):
         self.current_cart.insert(i, data)
         self.__update_current_total()
 
+    def checkout(self):
+        self.calculate_change()
+        if self.amount_tendered > 0.0 and self.current_total > 0.0:
+            self.pc.open()
+
 
 class ProductTile(BoxLayout):
     product_code = StringProperty("")
@@ -178,3 +187,17 @@ class ReceiptItem(BoxLayout):
 
     def render(self, _):
         pass
+
+
+class PosCheckout(ModalView):
+    callback = ObjectProperty(allownone=True)
+    def __init__(self, **kw) -> None:
+        super().__init__(**kw)
+        Clock.schedule_once(self.render, .1)
+
+    def render(self, _):
+        pass
+
+    def complete(self):
+        self.generate_receipt(self)
+        self.dismiss()
