@@ -174,25 +174,25 @@
                     Text:
                         text:'Product'
                         color: app.color_primary_text
-                        font_size: app.fonts.size.h3
+                        font_size: app.fonts.size.h4
                         halign: "left"
                         size_hint_x: .4
                     Text:
                         text:'Qty'
                         color: app.color_primary_text
-                        font_size: app.fonts.size.h3
+                        font_size: app.fonts.size.h4
                         halign: "center"
                         size_hint_x: .2
                     Text:
                         text:'Each'
                         color: app.color_primary_text
-                        font_size: app.fonts.size.h3
+                        font_size: app.fonts.size.h4
                         halign: "right"   
                         size_hint_x: .2
                     Text:
                         text:'Amount'
                         color: app.color_primary_text
-                        font_size: app.fonts.size.h3
+                        font_size: app.fonts.size.h4
                         halign: "right"   
                         size_hint_x: .2  
                 Divider: 
@@ -401,7 +401,7 @@
         padding: dp(12)
         bcolor: app.color_primary_bg
         radius: [self.height*.06]
-        size_hint: [None, .7]
+        size_hint: [None, .5]
         width: self.height
         BoxLayout:
             size_hint_y: .6
@@ -415,7 +415,7 @@
             Text:
                 text:'Are you sure you want to complete this purchase?'
                 font_name: app.fonts.body
-                font_size: app.fonts.size.h2
+                font_size: app.fonts.size.h4
                 color: app.color_primary_text
                 halign: "center"
         AnchorLayout:
@@ -423,16 +423,16 @@
                 size_hint_y: .4
                 spacing: dp(12)
                 size_hint_y: None
-                height: dp(64)
+                height: dp(58)
 
                 FlatButton:
                     text: "Cancel"
-                    font_size: app.fonts.size.h2
+                    font_size: app.fonts.size.h3
                     color: app.color_tertiary
                     on_release: root.dismiss()
                 RoundedButton:
                     text: "Yes, Complete"
-                    font_size: app.fonts.size.h2
+                    font_size: app.fonts.size.h3
                     bcolor: app.color_primary
                     color: rgba("#ffffff")
                     radius: [self.height*.1]
